@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-internal interface IObjectBindable
+internal interface IMemberCreator
 {
     Func<ParameterExpression, Expression> Construct();
 }

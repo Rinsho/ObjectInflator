@@ -3,7 +3,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
-internal class Property : IObjectBindable
+internal class Property : IMemberCreator
 {
     protected IObjectCreator _obj;
     protected PropertyInfo _info;

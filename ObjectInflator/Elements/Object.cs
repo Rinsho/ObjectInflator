@@ -6,24 +6,16 @@ using System.Linq.Expressions;
 internal class Object : IObjectCreator
 {
     private Constructor _constructor;
-    private List<IObjectBindable> _members;
+    private List<IMemberCreator> _members;
     private Type _thisType;
 
-    public Object(Type objectType, Constructor constructor, IObjectBindable[] members)
+    public Object(Type objectType, Constructor constructor, IMemberCreator[] members)
     {
         _thisType = objectType;
         _constructor = constructor;
-        _members = new List<IObjectBindable>(members);
+        _members = new List<IMemberCreator>(members);
     }
 
-    /* Construct():
-        1) Create object - obj = Constructor.Construct
-        2) Create fields - foreach fe = Field.Construct, fe(obj)
-        3) Create properties - foreach pe = Property.Construct, pe(obj)
-        4) Create methods - foreach me = Method.Construct, me(obj)
-        5) Add obj to end of block
-        6) Return block
-    */
     public Expression Construct()
     {
         List<Expression> block = new List<Expression>();  
@@ -33,7 +25,7 @@ internal class Object : IObjectCreator
         block.Add(Expression.Assign(objVar, _constructor.Construct()));
 
         //Construct members
-        foreach (IObjectBindable member in _members)
+        foreach (IMemberCreator member in _members)
             block.Add(member.Construct()(objVar));
 
         //Set variable as return value of the block

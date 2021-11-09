@@ -3,7 +3,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
-internal class Field : IObjectBindable
+internal class Field : IMemberCreator
 {
     private IObjectCreator _obj;
     private FieldInfo _info;

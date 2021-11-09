@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Reflection;
 
-internal class Method : IObjectBindable
+internal class Method : IMemberCreator
 {
     private List<IObjectCreator> _params;
     private MethodInfo _info;
