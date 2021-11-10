@@ -8,6 +8,7 @@ internal class Constructor : IObjectCreator
 {
     private ConstructorInfo _constructor;
     private List<IObjectCreator> _params;
+    public Type Type { get => _constructor.DeclaringType; }
 
     public Constructor(ConstructorInfo constructor)
     {

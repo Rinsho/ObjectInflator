@@ -7,11 +7,14 @@ internal class Object : IObjectCreator
 {
     private Constructor _constructor;
     private List<IMemberCreator> _members;
-    private Type _thisType;
+    public Type Type { get => _constructor.Type; }
 
-    public Object(Type objectType, Constructor constructor, IMemberCreator[] members)
+    public Object(Constructor constructor, params IMemberCreator[] members)
+        : this(constructor, (IEnumerable<IMemberCreator>) members)
+    {}
+
+    public Object(Constructor constructor, IEnumerable<IMemberCreator> members)
     {
-        _thisType = objectType;
         _constructor = constructor;
         _members = new List<IMemberCreator>(members);
     }
@@ -19,7 +22,7 @@ internal class Object : IObjectCreator
     public Expression Construct()
     {
         List<Expression> block = new List<Expression>();  
-        ParameterExpression objVar = Expression.Variable(_thisType);
+        ParameterExpression objVar = Expression.Variable(this.Type);
         
         //Construct this object and assign to variable
         block.Add(Expression.Assign(objVar, _constructor.Construct()));
@@ -31,7 +34,7 @@ internal class Object : IObjectCreator
         //Set variable as return value of the block
         block.Add(objVar);
 
-        return Expression.Block(_thisType, new[] { objVar }, block);
+        return Expression.Block(this.Type, new[] { objVar }, block);
     }
 
 }

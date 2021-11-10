@@ -9,7 +9,7 @@ internal class Method : IMemberCreator
     private List<IObjectCreator> _params;
     private MethodInfo _info;
 
-    public Method(MethodInfo method, IObjectCreator[] parameters)
+    public Method(MethodInfo method, IEnumerable<IObjectCreator> parameters)
     {
         _info = method;
         _params = new List<IObjectCreator>(parameters);

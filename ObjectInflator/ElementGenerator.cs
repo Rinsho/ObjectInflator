@@ -7,10 +7,10 @@ using System.Diagnostics;
 
 namespace ExpressionGen
 {
-    public class ElementGenerator
+    internal class ElementGenerator
     {
         //Get ParserData fields.
-        public static IEnumerable<FieldInfo> GetFieldsOf(Type targetType)
+        protected static IEnumerable<FieldInfo> GetFieldsOf(Type targetType)
         {
             Debug.Assert(targetType != null);
 
@@ -20,7 +20,7 @@ namespace ExpressionGen
         }
 
         //Get ParserData properties.
-        public static IEnumerable<PropertyInfo> GetPropertiesOf(Type targetType)
+        protected static IEnumerable<PropertyInfo> GetPropertiesOf(Type targetType)
         {
             Debug.Assert(targetType != null);
 
@@ -30,7 +30,7 @@ namespace ExpressionGen
         }
 
         //Get ParserData methods. All args must be ParserData args or optional.
-        public static IEnumerable<MethodInfo> GetMethodsOf(Type targetType)
+        protected static IEnumerable<MethodInfo> GetMethodsOf(Type targetType)
         {
             Debug.Assert(targetType != null);
 
@@ -47,5 +47,78 @@ namespace ExpressionGen
             );
         }
 
+        //Get the parameterless constructor.
+        protected static ConstructorInfo GetConstructorOf(Type targetType)
+        {
+            Debug.Assert(targetType != null);
+
+            return targetType.GetConstructors()
+                .Where(constructor => constructor.GetParameters().Length == 0)
+                .First();
+        }
+
+        protected static List<Field> CreateFieldElementsFrom(IEnumerable<FieldInfo> fieldInfos)
+        {
+            List<Field> fieldElements = new List<Field>();
+            foreach (FieldInfo field in fieldInfos)
+            {
+                IObjectCreator fieldObjectElement = Create(field.FieldType);
+                Field fieldElement = new Field(field, fieldObjectElement);
+                fieldElements.Add(fieldElement);
+            }
+            return fieldElements;
+        }
+
+        protected static List<Property> CreatePropertyElementsFrom(IEnumerable<PropertyInfo> propertyInfos)
+        {
+            List<Property> propertyElements = new List<Property>();
+            foreach (PropertyInfo property in propertyInfos)
+            {
+                IObjectCreator propertyObjectElement = Create(property.PropertyType);
+                Property propertyElement = new Property(property, propertyObjectElement);
+                propertyElements.Add(propertyElement);
+            }
+            return propertyElements;
+        }
+
+        protected static List<Method> CreateMethodElementsFrom(IEnumerable<MethodInfo> methodInfos)
+        {
+            List<Method> methodElements = new List<Method>();
+            foreach (MethodInfo method in methodInfos)
+            {
+                List<IObjectCreator> methodObjectElements = new List<IObjectCreator>();
+                IEnumerable<ParameterInfo> methodParams =
+                    method.GetParameters().Where(
+                        param => param.IsDefined(typeof(ParserDataAttribute))
+                    );
+                foreach (ParameterInfo parameter in methodParams)
+                {
+                    IObjectCreator methodObjectElement = Create(parameter.ParameterType);
+                    methodObjectElements.Add(methodObjectElement);
+                }
+                Method methodElement = new Method(method, methodObjectElements);
+                methodElements.Add(methodElement);
+            }
+            return methodElements;
+        }
+
+        public static IObjectCreator Create(Type type)
+        {
+            //Create constructor element
+            ConstructorInfo constructor = GetConstructorOf(type);
+            Constructor constructorElement = new Constructor(constructor);
+
+            List<IMemberCreator> memberElements = new List<IMemberCreator>();
+            //Create field elements
+            memberElements.AddRange(CreateFieldElementsFrom(GetFieldsOf(type)));
+
+            //Create property elements
+            memberElements.AddRange(CreatePropertyElementsFrom(GetPropertiesOf(type)));
+
+            //Create method elements
+            memberElements.AddRange(CreateMethodElementsFrom(GetMethodsOf(type)));
+
+            return new Object(constructorElement, memberElements);
+        }
     }
 }
