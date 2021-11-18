@@ -10,14 +10,14 @@ namespace ExpressionGen.Tests
     {
         class Test
         {
-            [ParserData(DataID = "X")]
+            [DataTarget(DataId = "X")]
             public int x;
 
-            [ParserData(DataID = "Y")]
+            [DataTarget(DataId = "Y")]
             public string Y {get; set;}
 
             private string _z = string.Empty;
-            [ParserData]
+            [DataTarget]
             public string Z { set => this._z = value; }
         }
 
@@ -30,7 +30,7 @@ namespace ExpressionGen.Tests
         public void Test1()
         {
             
-            Assert.Pass();
+            Assert.Fail();
         }
     }
 }
