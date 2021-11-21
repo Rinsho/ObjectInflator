@@ -18,7 +18,7 @@ namespace ExpressionGen
 
         protected static IEnumerable<FieldInfo> GetFieldsOf(Type targetType)
         {
-            Debug.Assert(targetType != null && !targetType.IsPrimitive);
+            Debug.Assert(targetType != null);
 
             return targetType
                 .GetFields(MEMBER_FLAGS)
@@ -27,7 +27,7 @@ namespace ExpressionGen
 
         protected static IEnumerable<PropertyInfo> GetPropertiesOf(Type targetType)
         {
-            Debug.Assert(targetType != null && !targetType.IsPrimitive);
+            Debug.Assert(targetType != null);
 
             return targetType
                 .GetProperties(MEMBER_FLAGS)
@@ -36,7 +36,7 @@ namespace ExpressionGen
 
         protected static IEnumerable<MethodInfo> GetMethodsOf(Type targetType)
         {
-            Debug.Assert(targetType != null && !targetType.IsPrimitive);
+            Debug.Assert(targetType != null);
 
             return targetType
                 .GetMethods(MEMBER_FLAGS)
@@ -150,7 +150,7 @@ namespace ExpressionGen
             //Handle single-dimensional arrays
             if (type.IsArray)
                 return new Array(type, new NumericIterator(), CreateType(type.GetElementType()));
-
+            
             //Get any targeted members
             IEnumerable<IElement> members =
                 CreateFieldElementsFrom(GetFieldsOf(type))

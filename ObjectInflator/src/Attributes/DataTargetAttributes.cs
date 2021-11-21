@@ -1,6 +1,8 @@
 using System;
 
 [AttributeUsage(
+	AttributeTargets.Class |
+	AttributeTargets.Struct |
 	AttributeTargets.Property | 
 	AttributeTargets.Field |
 	AttributeTargets.Parameter,
