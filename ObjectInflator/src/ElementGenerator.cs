@@ -167,7 +167,10 @@ namespace ExpressionGen
             //Otherwise the type has targets, create the object container
             //using the parameterless constructor if there was no targeted constructor.
             return new Object(
-                CreateConstructorElementFrom(constructor ?? type.GetConstructor(Type.EmptyTypes)), 
+                CreateConstructorElementFrom(
+                    constructor ?? 
+                    type.GetConstructor(Type.EmptyTypes) ??
+                    throw new TypeNotSupportedException("No valid targeted or parameterless constructor found.")), 
                 members);
         }
     }

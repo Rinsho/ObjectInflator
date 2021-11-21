@@ -236,6 +236,26 @@ namespace ExpressionGen.Tests
                 () => ElementGenerator.CreateType(testType)
             );
         }
+
+        class ObjectWithNoValidConstructor
+        {
+            [DataTarget(DataId = "x")]
+            private int _x;
+
+            public ObjectWithNoValidConstructor(int x) {}
+        }
+
+        [Test]
+        public void OnObjectWithNoValidConstructor_TypeNotSupportedException()
+        {
+            //Arrange
+            Type testType = typeof(ObjectWithNoValidConstructor);
+
+            //Act and Assert
+            Assert.Throws<TypeNotSupportedException>(
+                () => ElementGenerator.CreateType(testType)
+            );
+        }
     }
 
     [TestFixture]
