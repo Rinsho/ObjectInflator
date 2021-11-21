@@ -1,8 +1,6 @@
 using System;
 
 [AttributeUsage(
-	AttributeTargets.Class |
-	AttributeTargets.Struct |
 	AttributeTargets.Property | 
 	AttributeTargets.Field |
 	AttributeTargets.Parameter,
@@ -11,7 +9,9 @@ using System;
 )]
 public class DataTargetAttribute : Attribute
 {
+	//Index value for data
 	public string DataId { get; set; } = string.Empty;
-	public bool ScopeOnly { get; set; } = false;
+	//Ignore sub-targets and force data assignment here.
+	public bool TruncateScope { get; set; } = false;
 }
 

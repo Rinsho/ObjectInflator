@@ -16,7 +16,7 @@ namespace ExpressionGen
             BindingFlags.NonPublic | 
             BindingFlags.Instance;
 
-        protected static IEnumerable<FieldInfo> GetFieldsOf(Type targetType)
+        protected static IEnumerable<FieldInfo> GetFieldTargetsOf(Type targetType)
         {
             Debug.Assert(targetType != null);
 
@@ -25,7 +25,7 @@ namespace ExpressionGen
                 .Where(field => field.IsDefined(typeof(DataTargetAttribute)));
         }
 
-        protected static IEnumerable<PropertyInfo> GetPropertiesOf(Type targetType)
+        protected static IEnumerable<PropertyInfo> GetPropertyTargetsOf(Type targetType)
         {
             Debug.Assert(targetType != null);
 
@@ -34,7 +34,7 @@ namespace ExpressionGen
                 .Where(property => property.IsDefined(typeof(DataTargetAttribute)));
         }
 
-        protected static IEnumerable<MethodInfo> GetMethodsOf(Type targetType)
+        protected static IEnumerable<MethodInfo> GetMethodTargetsOf(Type targetType)
         {
             Debug.Assert(targetType != null);
 
@@ -52,7 +52,7 @@ namespace ExpressionGen
                 });
         }
 
-        protected static ConstructorInfo GetConstructorOf(Type targetType)
+        protected static ConstructorInfo GetConstructorTargetsOf(Type targetType)
         {
             Debug.Assert(targetType != null);
 
@@ -71,8 +71,8 @@ namespace ExpressionGen
                             parameter.IsOptional ||
                             parameter.IsDefined(typeof(DataTargetAttribute))
                         );
-                }).DefaultIfEmpty(targetType.GetConstructor(Type.EmptyTypes))
-                .Single(constructor => constructor != null);
+                }).DefaultIfEmpty(null)
+                .Single();
         }
 
         protected static IEnumerable<Field> CreateFieldElementsFrom(IEnumerable<FieldInfo> fields)
@@ -153,19 +153,22 @@ namespace ExpressionGen
             
             //Get any targeted members
             IEnumerable<IElement> members =
-                CreateFieldElementsFrom(GetFieldsOf(type))
-                .Concat<IElement>(CreatePropertyElementsFrom(GetPropertiesOf(type)))
-                .Concat<IElement>(CreateMethodElementsFrom(GetMethodsOf(type)));
+                CreateFieldElementsFrom(GetFieldTargetsOf(type))
+                .Concat<IElement>(CreatePropertyElementsFrom(GetPropertyTargetsOf(type)))
+                .Concat<IElement>(CreateMethodElementsFrom(GetMethodTargetsOf(type)));
+
+            //Get targeted constructor if it exists.
+            ConstructorInfo constructor = GetConstructorTargetsOf(type);
 
             //If there're no targets, then this is a data element.
-            if (members.Count() < 1)
+            if (members.Count() < 1 && constructor == null)
                 return new Data(type);
             
-            //Otherwise the type has targets, create the object container.
+            //Otherwise the type has targets, create the object container
+            //using the parameterless constructor if there was no targeted constructor.
             return new Object(
-                CreateConstructorElementFrom(GetConstructorOf(type)),
-                members
-            );
+                CreateConstructorElementFrom(constructor ?? type.GetConstructor(Type.EmptyTypes)), 
+                members);
         }
     }
 }

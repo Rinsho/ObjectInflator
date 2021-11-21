@@ -21,7 +21,7 @@ internal class Object : IElement
 
     //IElement interface
     public string DataId { get; protected set; }
-    public IEnumerable<IElement> Children { get => Members; }
+    public IEnumerable<IElement> Children { get => Members.Prepend(Constructor); }
     public void Accept(IVisitor visitor) =>
         visitor.Visit(this);
 
