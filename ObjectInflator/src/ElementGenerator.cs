@@ -173,5 +173,8 @@ namespace ExpressionGen
                     throw new TypeNotSupportedException("No valid targeted or parameterless constructor found.")), 
                 members);
         }
+
+        public static IElement CreateType<T>() =>
+            CreateType(typeof(T));
     }
 }
