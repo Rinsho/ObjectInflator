@@ -11,31 +11,27 @@ internal class DataContext
     private readonly PropertyInfo _arrayIndexer;
     private readonly ParameterExpression _baseParameter;
 
-    public DataContext(ParameterExpression baseParameter)
+    public DataContext()
     {
         _dictionaryIndexer = typeof(Dictionary<string, object>).GetProperty("Item");
         _arrayIndexer = typeof(Array).GetProperty("Item");
         _dataContext = new Stack<Expression>();
-        _baseParameter = baseParameter;
+        _baseParameter = Expression.Parameter(typeof(Dictionary<string, object>));
         _dataContext.Push(_baseParameter);
     }
 
-    public Expression AddContext(IElement element)
+    public void AddContextUsing(IElement element)
     {
-        if (element.HasDataScope)
-        {
-            _dataContext.Push(
-                Expression.MakeIndex(
-                    _dataContext.Peek(),
-                    _dictionaryIndexer,
-                    new[] { Expression.Constant(element.DataId) }
-                )
-            );
-        }
-        return _dataContext.Peek();
+        _dataContext.Push(
+            Expression.MakeIndex(
+                _dataContext.Peek(),
+                _dictionaryIndexer,
+                new[] { Expression.Constant(element.DataId) }
+            )
+        );
     }
 
-    public Expression AddContext(NumericIterator iterator)
+    public void AddContextUsing(NumericIterator iterator)
     {
         _dataContext.Push(
             Expression.MakeIndex(
@@ -44,7 +40,6 @@ internal class DataContext
                 new[] { iterator.InnerIterator }
             )
         );
-        return _dataContext.Peek();
     }
 
     public Expression GetCurrent() => 
