@@ -210,12 +210,8 @@ namespace ExpressionGen.Tests
         [Test]
         public void OnMultidimensionalArrayMember_TypeNotSupportedException()
         {
-            //Arrange
-            Type testType = typeof(ObjectWithMultidimensionalArray);
-
-            //Act and Assert
             Assert.Throws<TypeNotSupportedException>(
-                () => ElementGenerator.CreateType(testType)
+                () => ElementGenerator.CreateType<ObjectWithMultidimensionalArray>()
             );
         }
 
@@ -228,12 +224,8 @@ namespace ExpressionGen.Tests
         [Test]
         public void OnJaggedArrayMember_TypeNotSupportedException()
         {
-            //Arrange
-            Type testType = typeof(ObjectWithJaggedArray);
-
-            //Act and Assert
             Assert.Throws<TypeNotSupportedException>(
-                () => ElementGenerator.CreateType(testType)
+                () => ElementGenerator.CreateType<ObjectWithJaggedArray>()
             );
         }
 
@@ -248,25 +240,9 @@ namespace ExpressionGen.Tests
         [Test]
         public void OnObjectWithNoValidConstructor_TypeNotSupportedException()
         {
-            //Arrange
-            Type testType = typeof(ObjectWithNoValidConstructor);
-
-            //Act and Assert
             Assert.Throws<TypeNotSupportedException>(
-                () => ElementGenerator.CreateType(testType)
+                () => ElementGenerator.CreateType<ObjectWithNoValidConstructor>()
             );
         }
-    }
-
-    [TestFixture]
-    public class ConstructionVisitorTests
-    {
-
-    }
-
-    //Exercise this through ConstructionVisitorTests?
-    public class DataContextTests
-    {
-
     }
 }
