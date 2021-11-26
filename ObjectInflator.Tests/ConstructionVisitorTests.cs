@@ -1,15 +1,10 @@
 using NUnit.Framework;
 using System;
-using System.Linq.Expressions;
-using ExpressionGen;
 using System.Collections.Generic;
 
 
 //General note: I just realized if a type is an interface we can't construct it.
-//    It's effectively [NoInit] by default.
-
-//Generic Construction/Context still feels weird and brittle. Maybe wrap all incoming
-//data in a Dict[""] = param to force a Dict<string, object>?
+//    It's effectively [NoInit] by default. Force raw cast?
 
 namespace ExpressionGen.Tests
 {
@@ -66,6 +61,43 @@ namespace ExpressionGen.Tests
 
             //Assert
             Assert.That(obj.x, Is.EqualTo(5));
+        }
+
+
+        public void OnPropertyData_FillObjectWithPropertyData()
+        {
+
+        }
+
+        public void OnMethodData_CallMethodWithParameterData()
+        {
+
+        }
+
+        public void OnConstructorData_CreateObjectWithParameterData()
+        {
+
+        }
+
+        public void OnPropertyIndexData_FillObjectWithPropertyIndexData()
+        {
+
+        }
+
+        public void OnFieldArrayData_FillObjectWithArrayData()
+        {
+
+        }
+
+        public void OnNestedTypeData_FillObjectWithObjectData()
+        {
+
+        }
+
+        //Combine a little of everything into one test.
+        public void OnComplexData_ConstructProperObject()
+        {
+
         }
     }
 }
