@@ -28,7 +28,7 @@ namespace ExpressionGen.Tests
             ElementToStringVisitor visitor = new ElementToStringVisitor();
 
             //Act
-            IElement dataElement = ElementGenerator.CreateType(testType);           
+            Element dataElement = ElementGenerator.CreateType(testType);           
             dataElement.Accept(visitor);
             string result = visitor.Result;
 
@@ -51,7 +51,7 @@ namespace ExpressionGen.Tests
             ElementToStringVisitor visitor = new ElementToStringVisitor();
 
             //Act
-            IElement objectElement = ElementGenerator.CreateType(testType);
+            Element objectElement = ElementGenerator.CreateType(testType);
             objectElement.Accept(visitor);
             string result = visitor.Result;
 
@@ -77,7 +77,7 @@ namespace ExpressionGen.Tests
             ElementToStringVisitor visitor = new ElementToStringVisitor();
 
             //Act
-            IElement objectElement = ElementGenerator.CreateType(testType);
+            Element objectElement = ElementGenerator.CreateType(testType);
             objectElement.Accept(visitor);
             string result = visitor.Result;
 
@@ -103,7 +103,7 @@ namespace ExpressionGen.Tests
             ElementToStringVisitor visitor = new ElementToStringVisitor();
 
             //Act
-            IElement objectElement = ElementGenerator.CreateType(testType);
+            Element objectElement = ElementGenerator.CreateType(testType);
             objectElement.Accept(visitor);
             string result = visitor.Result;
 
@@ -131,7 +131,7 @@ namespace ExpressionGen.Tests
             ElementToStringVisitor visitor = new ElementToStringVisitor();
 
             //Act
-            IElement objectElement = ElementGenerator.CreateType(testType);
+            Element objectElement = ElementGenerator.CreateType(testType);
             objectElement.Accept(visitor);
             string result = visitor.Result;
 
@@ -163,7 +163,7 @@ namespace ExpressionGen.Tests
             ElementToStringVisitor visitor = new ElementToStringVisitor();
 
             //Act
-            IElement objectElement = ElementGenerator.CreateType(testType);
+            Element objectElement = ElementGenerator.CreateType(testType);
             objectElement.Accept(visitor);
             string result = visitor.Result;
 
@@ -189,7 +189,7 @@ namespace ExpressionGen.Tests
             ElementToStringVisitor visitor = new ElementToStringVisitor();
 
             //Act
-            IElement objectElement = ElementGenerator.CreateType(testType);
+            Element objectElement = ElementGenerator.CreateType(testType);
             objectElement.Accept(visitor);
             string result = visitor.Result;
 

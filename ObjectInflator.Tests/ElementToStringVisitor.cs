@@ -7,9 +7,9 @@ internal class ElementToStringVisitor : IVisitor
     private StringBuilder _result = new StringBuilder();
     public string Result { get => _result.ToString(); }
 
-    public void VisitChildren(IElement element)
+    public void VisitChildren(Element element)
     {
-        foreach (IElement child in element.Children)
+        foreach (Element child in element.Children)
             child.Accept(this);
     }
 
