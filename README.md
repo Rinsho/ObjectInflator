@@ -12,6 +12,7 @@ Should be able to run "dotnet test" to execute the nUnit tests from command line
 `ElementGenerator.Create<ObjectType>()` is the main entry-point for creating the Element tree.
 `ConstructionVisitor` is passed to the Element tree to create the Expression tree.
 `ConstructionVisitor.GetResult<DataType, ObjectType>` to retrieve the compiled lambda.
+
 These are the core internal classes the public API will run on.
 
 Currently supports:
