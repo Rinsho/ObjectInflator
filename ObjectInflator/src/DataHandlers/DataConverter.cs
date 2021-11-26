@@ -3,7 +3,6 @@ using System;
 using System.Reflection;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Collections;
 using System.Collections.Generic;
 
 internal class DataConverter
@@ -11,7 +10,6 @@ internal class DataConverter
     protected BindingFlags _operatorFlags = BindingFlags.Public | BindingFlags.Static;
     protected string _implicitOperatorName = "op_Implicit";
     protected string _explicitOperatorName = "op_Explicit";
-
 
     public virtual LambdaExpression GetConverterFor(Type targetType)
     {

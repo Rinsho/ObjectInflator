@@ -1,8 +1,6 @@
 
 using System;
 using System.Linq.Expressions;
-using System.Collections.Generic;
-using System.Reflection;
 
 internal class NumericIterator : IIterator
 {

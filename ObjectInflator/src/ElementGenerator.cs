@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Diagnostics;
 
 [assembly:System.Runtime.CompilerServices.InternalsVisibleTo("ObjectInflator.Tests")]
