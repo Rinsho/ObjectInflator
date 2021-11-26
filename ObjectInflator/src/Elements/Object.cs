@@ -5,24 +5,23 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Linq;
 
-internal class Object : IElement
+internal class Object : Element
 {
     public Type Type { get => Constructor.Type; }
     public Constructor Constructor { get; protected set; }
-    public List<IElement> Members { get; protected set; } 
+    public List<Element> Members { get; protected set; } 
 
-    public Object(Constructor constructor, IEnumerable<IElement> members)
+    public Object(Constructor constructor, IEnumerable<Element> members)
     {
         Constructor = constructor;
-        Members = new List<IElement>(members);
+        Members = new List<Element>(members);
         if (Type.IsDefined(typeof(DataTargetAttribute)))
             DataId = Type.GetCustomAttribute<DataTargetAttribute>().DataId;
     }
 
     //IElement interface
-    public string DataId { get; protected set; }
-    public IEnumerable<IElement> Children { get => Members.Prepend(Constructor); }
-    public void Accept(IVisitor visitor) =>
+    public override IEnumerable<Element> Children { get => Members.Prepend(Constructor); }
+    public override void Accept(IVisitor visitor) =>
         visitor.Visit(this);
 
 }

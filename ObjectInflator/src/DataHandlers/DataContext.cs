@@ -13,18 +13,27 @@ internal class DataContext
 
     public DataContext()
     {
-        _dictionaryIndexer = typeof(Dictionary<string, object>).GetProperty("Item");
-        _arrayIndexer = typeof(Array).GetProperty("Item");
+        _dictionaryIndexer = typeof(IDictionary<string, object>).GetProperty("Item");
+        _arrayIndexer = typeof(IList<object>).GetProperty("Item");
         _dataContext = new Stack<Expression>();
-        _baseParameter = Expression.Parameter(typeof(Dictionary<string, object>));
-        _dataContext.Push(_baseParameter);
+        _baseParameter = Expression.Parameter(typeof(IDictionary<string, object>));
+        _dataContext.Push(
+            Expression.MakeIndex(
+                _baseParameter,
+                _dictionaryIndexer,
+                new[] { Expression.Constant(string.Empty) }
+            )
+        );
     }
 
-    public void AddContextUsing(IElement element)
+    public void AddContextUsing(Element element)
     {
         _dataContext.Push(
             Expression.MakeIndex(
-                _dataContext.Peek(),
+                Expression.Convert(
+                    _dataContext.Peek(), 
+                    typeof(IDictionary<string, object>)
+                ),
                 _dictionaryIndexer,
                 new[] { Expression.Constant(element.DataId) }
             )
@@ -35,7 +44,10 @@ internal class DataContext
     {
         _dataContext.Push(
             Expression.MakeIndex(
-                _dataContext.Peek(), 
+                Expression.Convert(
+                    _dataContext.Peek(),
+                    typeof(IList<object>)
+                ), 
                 _arrayIndexer, 
                 new[] { iterator.InnerIterator }
             )

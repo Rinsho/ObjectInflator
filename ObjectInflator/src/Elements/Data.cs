@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-internal class Data : IElement
+internal class Data : Element
 {
     public Type Type { get; protected set; }
     
@@ -16,8 +16,7 @@ internal class Data : IElement
     }
 
     //IElement interface
-    public string DataId { get; protected set; }
-    public IEnumerable<IElement> Children { get => new IElement[] {}; }
-    public void Accept(IVisitor visitor) =>
+    public override IEnumerable<Element> Children { get => new Element[] {}; }
+    public override void Accept(IVisitor visitor) =>
         visitor.Visit(this);
 }

@@ -4,13 +4,13 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Collections.Generic;
 
-internal class Field : IElement
+internal class Field : Element
 {
     public Type Type { get => FieldInfo.FieldType; }
     public FieldInfo FieldInfo { get; protected set; }
-    public IElement FieldObject { get; protected set; }
+    public Element FieldObject { get; protected set; }
 
-    public Field(FieldInfo field, IElement fieldObj)
+    public Field(FieldInfo field, Element fieldObj)
     {
         if (field.IsInitOnly || field.IsLiteral)
         {
@@ -25,8 +25,7 @@ internal class Field : IElement
     }
     
     //IElement interface
-    public string DataId { get; protected set; }
-    public IEnumerable<IElement> Children { get => new[] { FieldObject }; }
-    public void Accept(IVisitor visitor) =>
+    public override IEnumerable<Element> Children { get => new[] { FieldObject }; }
+    public override void Accept(IVisitor visitor) =>
         visitor.Visit(this);
 }

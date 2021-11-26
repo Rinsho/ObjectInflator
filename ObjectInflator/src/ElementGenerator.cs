@@ -135,7 +135,7 @@ namespace ExpressionGen
             );
         }
 
-        public static IElement CreateType(Type type)
+        public static Element CreateType(Type type)
         {
             Debug.Assert(type != null);
 
@@ -152,10 +152,10 @@ namespace ExpressionGen
                 return new Array(type, new NumericIterator(), CreateType(type.GetElementType()));
             
             //Get any targeted members
-            IEnumerable<IElement> members =
+            IEnumerable<Element> members =
                 CreateFieldElementsFrom(GetFieldTargetsOf(type))
-                .Concat<IElement>(CreatePropertyElementsFrom(GetPropertyTargetsOf(type)))
-                .Concat<IElement>(CreateMethodElementsFrom(GetMethodTargetsOf(type)));
+                .Concat<Element>(CreatePropertyElementsFrom(GetPropertyTargetsOf(type)))
+                .Concat<Element>(CreateMethodElementsFrom(GetMethodTargetsOf(type)));
 
             //Get targeted constructor if it exists.
             ConstructorInfo constructor = GetConstructorTargetsOf(type);
@@ -174,7 +174,7 @@ namespace ExpressionGen
                 members);
         }
 
-        public static IElement CreateType<T>() =>
+        public static Element CreateType<T>() =>
             CreateType(typeof(T));
     }
 }

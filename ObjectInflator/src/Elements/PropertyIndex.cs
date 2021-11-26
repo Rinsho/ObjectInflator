@@ -8,7 +8,7 @@ internal class PropertyIndex : Property
 {
     public IIterator Iterator { get; protected set; }
 
-    public PropertyIndex(PropertyInfo property, IIterator iterator, IElement propertyObj)
+    public PropertyIndex(PropertyInfo property, IIterator iterator, Element propertyObj)
         : base (property, propertyObj)
     {
         Iterator = iterator;

@@ -4,13 +4,13 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Collections.Generic;
 
-internal class Property : IElement
+internal class Property : Element
 {
     public Type Type { get => PropertyInfo.PropertyType; }
-    public IElement PropertyObject { get; protected set; }
+    public Element PropertyObject { get; protected set; }
     public PropertyInfo PropertyInfo { get; protected set; }
     
-    public Property(PropertyInfo property, IElement propertyObj)
+    public Property(PropertyInfo property, Element propertyObj)
     {
         if (!property.CanWrite)
         {
@@ -25,8 +25,7 @@ internal class Property : IElement
     }
 
     //IElement interface
-    public string DataId { get; protected set; }
-    public IEnumerable<IElement> Children { get => new[] { PropertyObject }; }
-    public virtual void Accept(IVisitor visitor) =>
+    public override IEnumerable<Element> Children { get => new[] { PropertyObject }; }
+    public override void Accept(IVisitor visitor) =>
         visitor.Visit(this);
 }
