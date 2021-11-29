@@ -74,9 +74,11 @@ internal class ConstructionVisitor : IVisitor
     public void Visit(Array element)
     {
         Visit(element, (data) => {
+            /* Won't work, type is obj
             if (!data.Type.IsArray)
                 throw new InvalidDataException("Array member requires array-type data.");
-
+            */
+            
             //Visit array's child
             element.ArrayObject.Accept(this);
 
@@ -90,7 +92,7 @@ internal class ConstructionVisitor : IVisitor
                     Expression.NewArrayBounds(
                         array.Type.GetElementType(),
                         Expression.MakeMemberAccess(
-                            data,
+                            Expression.Convert(data, typeof(Array)),
                             typeof(Array).GetMember("Length")[0]
                         )
                     )
@@ -259,6 +261,14 @@ internal class ConstructionVisitor : IVisitor
 
             //Push constructor element for parent
             _constructedElements.Push(constructorElement);
+        });
+    }
+
+    public void Visit(Parameter element)
+    {
+        Visit(element, (data) => {
+            //Visit parameter's child
+            element.ParameterObject.Accept(this);
         });
     }
 }

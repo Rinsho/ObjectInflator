@@ -59,4 +59,10 @@ internal class ElementToStringVisitor : IVisitor
         _result.Append("|Constructor");
         VisitChildren(element);
     }
+
+    public void Visit(Parameter element)
+    {
+        _result.Append("|Parameter");
+        VisitChildren(element);
+    }
 }

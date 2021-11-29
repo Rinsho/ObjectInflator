@@ -116,11 +116,14 @@ namespace ExpressionGen
                     method
                         .GetParameters()
                         .Where(parameter => parameter.IsDefined(typeof(DataTargetAttribute)))
-                        .Select(parameter => CreateType(parameter.ParameterType))
+                        .Select(parameter => 
+                            new Parameter(parameter, CreateType(parameter.ParameterType))
+                        )
                 )
             );
         }
 
+        //Need to create a parameter class to pull DataTarget information. Data doesn't do it.
         protected static Constructor CreateConstructorElementFrom(ConstructorInfo constructor)
         {
             Debug.Assert(constructor != null);
@@ -130,7 +133,9 @@ namespace ExpressionGen
                 constructor
                     .GetParameters()
                     .Where(parameter => parameter.IsDefined(typeof(DataTargetAttribute)))
-                    .Select(parameter => CreateType(parameter.ParameterType))
+                    .Select(parameter => 
+                        new Parameter(parameter, CreateType(parameter.ParameterType))
+                    )
             );
         }
 

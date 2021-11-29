@@ -9,4 +9,5 @@ internal interface IVisitor
     void Visit(Object element);
     void Visit(Array element);
     void Visit(Constructor element);
+    void Visit(Parameter element);
 }

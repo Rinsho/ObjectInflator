@@ -2,6 +2,10 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
+//Field usage and assignment warnings are irrelevant.
+#pragma warning disable CS0169
+#pragma warning disable CS0649
+
 namespace ExpressionGen.Tests
 {
     [TestFixture]
@@ -106,7 +110,7 @@ namespace ExpressionGen.Tests
             string result = visitor.Result;
 
             //Assert
-            string expectedResult = "|Object|Constructor|Method|Data";
+            string expectedResult = "|Object|Constructor|Method|Parameter|Data";
             Assert.That(
                 string.Equals(result, expectedResult, StringComparison.OrdinalIgnoreCase),
                 result
@@ -134,7 +138,7 @@ namespace ExpressionGen.Tests
             string result = visitor.Result;
 
             //Assert
-            string expectedResult = "|Object|Constructor|Data|Object|Constructor|Field|Data";
+            string expectedResult = "|Object|Constructor|Parameter|Data|Parameter|Object|Constructor|Field|Data";
             Assert.That(
                 string.Equals(result, expectedResult, StringComparison.OrdinalIgnoreCase), 
                 result
