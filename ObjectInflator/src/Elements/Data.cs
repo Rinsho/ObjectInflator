@@ -14,7 +14,7 @@ internal class Data : Element
             DataId = type.GetCustomAttribute<DataTargetAttribute>().DataId;
     }
 
-    //IElement interface
+    //Element
     public override IEnumerable<Element> Children { get => new Element[] {}; }
     public override void Accept(IVisitor visitor) =>
         visitor.Visit(this);

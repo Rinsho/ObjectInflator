@@ -1,6 +1,7 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -14,7 +15,7 @@ internal class DataContext
     public DataContext()
     {
         _dictionaryIndexer = typeof(IDictionary<string, object>).GetProperty("Item");
-        _arrayIndexer = typeof(IList<object>).GetProperty("Item");
+        _arrayIndexer = typeof(IList).GetProperty("Item");
         _dataContext = new Stack<Expression>();
         _baseParameter = Expression.Parameter(typeof(IDictionary<string, object>));
         _dataContext.Push(
@@ -40,13 +41,13 @@ internal class DataContext
         );
     }
 
-    public void AddContextUsing(NumericIterator iterator)
+    public void AddContextUsing(IIterator iterator)
     {
         _dataContext.Push(
             Expression.MakeIndex(
                 Expression.Convert(
                     _dataContext.Peek(),
-                    typeof(IList<object>)
+                    typeof(IList)
                 ), 
                 _arrayIndexer, 
                 new[] { iterator.InnerIterator }

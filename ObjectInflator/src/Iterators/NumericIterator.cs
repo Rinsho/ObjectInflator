@@ -1,6 +1,8 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Collections;
+using System.Collections.Generic;
 
 internal class NumericIterator : IIterator
 {
@@ -8,10 +10,10 @@ internal class NumericIterator : IIterator
 
     public NumericIterator()
     {
-        InnerIterator = Expression.Variable(typeof(int));
+        InnerIterator = Expression.Parameter(typeof(int));
     }
 
-    public Expression Create(Expression data, Expression target)
+    public Expression Create(Expression data, Expression body)
     {
         LabelTarget exit = Expression.Label();
         return Expression.Block(
@@ -25,16 +27,16 @@ internal class NumericIterator : IIterator
                             Expression.GreaterThanOrEqual(
                                 InnerIterator, 
                                 Expression.MakeMemberAccess(
-                                    data,
-                                    data.Type.GetMember(nameof(System.Array.Length))[0]
+                                    Expression.Convert(data, typeof(ICollection)),
+                                    typeof(ICollection).GetProperty(nameof(ICollection.Count))
                                 )
                             ),
                             Expression.Break(exit)
                         ),
                         //Body start
-                        target,
+                        body,
                         //Body end
-                        Expression.Increment(InnerIterator)
+                        Expression.PreIncrementAssign(InnerIterator)
                     ),
                     exit
                 )

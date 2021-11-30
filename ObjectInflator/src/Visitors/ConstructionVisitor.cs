@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -74,13 +75,11 @@ internal class ConstructionVisitor : IVisitor
     public void Visit(Array element)
     {
         Visit(element, (data) => {
-            /* Won't work, type is obj
-            if (!data.Type.IsArray)
-                throw new InvalidDataException("Array member requires array-type data.");
-            */
-            
+            //Add iterator's data context for child
+            _dataContext.AddContextUsing(element.Iterator);
             //Visit array's child
             element.ArrayObject.Accept(this);
+            _dataContext.RemoveCurrent();
 
             //Construct array element
             ParameterExpression array = Expression.Parameter(element.Type);
@@ -92,8 +91,8 @@ internal class ConstructionVisitor : IVisitor
                     Expression.NewArrayBounds(
                         array.Type.GetElementType(),
                         Expression.MakeMemberAccess(
-                            Expression.Convert(data, typeof(Array)),
-                            typeof(Array).GetMember("Length")[0]
+                            Expression.Convert(data, typeof(ICollection)),
+                            typeof(ICollection).GetProperty(nameof(ICollection.Count))
                         )
                     )
                 ),
@@ -221,8 +220,11 @@ internal class ConstructionVisitor : IVisitor
     public void Visit(PropertyIndex element)
     {
         Visit(element, (data) => {
+            //Add iterator's data context for child
+            _dataContext.AddContextUsing(element.Iterator);
             //Visit property index's child
             element.PropertyObject.Accept(this);
+            _dataContext.RemoveCurrent();
 
             //Construct property index
             Expression propertyIndexElement = element.Iterator.Create(
