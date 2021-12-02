@@ -4,7 +4,7 @@ Generates and inflates objects provided tagged data.
 Work in progress.
 
 Current (unoptimized) benchmarks:
-- 767 ns/obj for full generation of a type+element (element tree, expression compilation, and object creation).
+- 767 ns/obj for full generation of a type+object (element tree, expression compilation, and object creation).
 - 220 ns/obj for object creation only.
 
 If you want to test it or play around with it, the current details:
