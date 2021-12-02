@@ -351,3 +351,6 @@ MigrationBackup/
 
 # Ignore VSCode settings
 .vscode
+
+#Ignore performance tests for now
+Performance.Tests

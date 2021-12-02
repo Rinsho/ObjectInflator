@@ -3,8 +3,11 @@ Generates and inflates objects provided tagged data.
 
 Work in progress.
 
-If you want to test it or play around with it, the current details:
+Current (unoptimized) benchmarks:
+- 767 ns/obj for full generation of a type+element (element tree, expression compilation, and object creation).
+- 220 ns/obj for object creation only.
 
+If you want to test it or play around with it, the current details:
 
 .NET Core 3.1 required
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Diagnostics;
 
 [assembly:System.Runtime.CompilerServices.InternalsVisibleTo("ObjectInflator.Tests")]
+[assembly:System.Runtime.CompilerServices.InternalsVisibleTo("Performance.Tests")]
 
 namespace ExpressionGen
 {
